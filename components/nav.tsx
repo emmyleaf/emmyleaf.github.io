@@ -7,7 +7,7 @@ const leftLinks = [
 
 const rightLinks = [
   { href: 'https://github.com/emmyleaf', label: 'GitHub' },
-  { href: 'https://nextjs.org/docs', label: 'Docs' },
+  // { href: 'https://nextjs.org/docs', label: 'Docs' },
 ]
 
 const Nav: NextComponentType = () => {
