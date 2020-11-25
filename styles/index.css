@@ -1,19 +1,25 @@
+@import "fontsource-open-sans/index.css";
+@import "fontsource-zilla-slab/index.css";
+
 @tailwind base;
-
-/* Write your own custom base styles here */
-
 @tailwind components;
+@tailwind utilities;
 
 html,
 body {
-  @apply bg-gray-50 dark:bg-gray-900;
+  font-family: "Open Sans";
+  @apply h-full bg-gradient-to-t from-pink-600 to-pink-400;
 }
 
-/* Write your own custom component styles here */
-.btn-blue {
-  @apply px-4 py-2 font-bold text-white bg-blue-500 rounded;
+header {
+  @apply py-20;
 }
 
-@tailwind utilities;
+header h1 {
+  font-family: "Zilla Slab";
+  @apply text-6xl text-center text-pink-800;
+}
 
-/* Your own custom utilities */
+.button {
+  @apply px-4 py-2 text-pink-200 bg-pink-800 hover:bg-pink-700 rounded ;
+}
