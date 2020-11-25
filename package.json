@@ -1,6 +1,10 @@
 {
   "name": "emmyleaf.github.io",
   "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/emmyleaf/emmyleaf.github.io.git"
+  },
   "scripts": {
     "dev": "next",
     "build": "next build && next export",
