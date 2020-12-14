@@ -1,11 +1,12 @@
 version: 2
 updates:
 
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    target-branch: nextjs
+  # Commented out until dependabot can group updates in 1 PR
+  # - package-ecosystem: "npm"
+  #   directory: "/"
+  #   schedule:
+  #     interval: "weekly"
+  #   target-branch: nextjs
 
   - package-ecosystem: "github-actions"
     directory: "/"

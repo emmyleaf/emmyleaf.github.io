@@ -1,0 +1,14 @@
+name: Update NPM dependencies
+on:
+  schedule:
+    - cron:  '0 12 * * 1'
+jobs:
+  update-deps:
+    name: Update NPM dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - uses: neverendingqs/gh-action-node-update-deps@v1.7.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
