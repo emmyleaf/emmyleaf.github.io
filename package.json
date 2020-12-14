@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "fontsource-open-sans": "^3.0.9",
-    "fontsource-zilla-slab": "^3.0.9",
+    "fontsource-zilla-slab": "^3.1.5",
     "next": "^10.0.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
