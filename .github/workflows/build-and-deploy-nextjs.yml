@@ -1,16 +1,22 @@
 name: Build and Deploy - Next.js
 on:
+  workflow_dispatch:
   push:
     branches:
       - nextjs
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2.3.4
         with:
           persist-credentials: false
+
+      - name: Setup Node 🧰
+        uses: actions/setup-node@v2.1.3
+        with:
+          node-version: '15'
 
       - name: Cache 💾
         uses: actions/cache@v2

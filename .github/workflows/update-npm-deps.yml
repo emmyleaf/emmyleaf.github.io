@@ -1,14 +1,23 @@
 name: Update NPM dependencies
 on:
+  workflow_dispatch:
   schedule:
-    - cron:  '0 12 * * 1'
+    - cron:  '0 9 * * 1'
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
-  update-deps:
-    name: Update NPM dependencies
-    runs-on: ubuntu-latest
-
+  update-npm-deps:
+    runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2.3.4
-      - uses: neverendingqs/gh-action-node-update-deps@v1.7.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2.3.4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node 🧰
+        uses: actions/setup-node@v2.1.3
+        with:
+          node-version: '15'
+
+      - name: Update NPM dependencies 🆙
+        run: ./.github/workflows/update-npm-deps.sh
