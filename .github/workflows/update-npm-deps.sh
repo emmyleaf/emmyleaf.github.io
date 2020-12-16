@@ -12,7 +12,7 @@ fi
 
 DESCRIPTION="chore: update deps ($(date -I))"
 PR_BRANCH=chore/deps-$(date +%s)
-PULL_REQUEST_LABELS="dependencies"
+PULL_REQUEST_LABELS="dependencies,javascript"
 
 git config user.name "github-actions[bot]"
 git config user.email "github-actions[bot]@users.noreply.github.com"
