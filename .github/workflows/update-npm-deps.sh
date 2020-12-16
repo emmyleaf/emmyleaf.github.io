@@ -7,7 +7,7 @@ npx npm-check-updates -u
 
 npm install --package-lock-only --ignore-scripts
 
-if $(git diff-index --quiet HEAD); then
+if git diff-files --quiet; then
   echo 'No dependencies needed to be updated!'
   exit 0
 fi
