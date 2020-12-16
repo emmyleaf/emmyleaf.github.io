@@ -11,7 +11,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@mdx-js/loader": "^1.6.21",
+    "@mdx-js/loader": "^1.6.22",
     "@next/mdx": "^10.0.3",
     "fontsource-open-sans": "^3.1.5",
     "fontsource-zilla-slab": "^3.1.5",
@@ -20,10 +20,10 @@
     "react-dom": "^17.0.1"
   },
   "devDependencies": {
-    "@types/node": "^14.14.13",
+    "@types/node": "^14.14.14",
     "@types/react": "^17.0.0",
-    "@typescript-eslint/eslint-plugin": "^4.9.1",
-    "@typescript-eslint/parser": "^4.9.1",
+    "@typescript-eslint/eslint-plugin": "^4.10.0",
+    "@typescript-eslint/parser": "^4.10.0",
     "autoprefixer": "^10.1.0",
     "eslint": "^7.15.0",
     "eslint-config-prettier": "^7.0.0",
