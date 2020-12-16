@@ -1,6 +1,8 @@
 #!/bin/bash
 set -eu
 
+npm install -g npm@7
+
 npx npm-check-updates -u
 
 npm install --package-lock-only --ignore-scripts

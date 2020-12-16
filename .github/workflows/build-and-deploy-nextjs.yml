@@ -25,10 +25,7 @@ jobs:
           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install and Build 🔧
-        env:
-          NODE_ENV: development
         run: |
-          echo $NODE_ENV
           npm install -g npm@7
           npm install
           npm run build
