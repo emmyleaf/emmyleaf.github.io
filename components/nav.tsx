@@ -5,10 +5,7 @@ const leftLinks = [
   // { href: 'https://music.leaf.codes', label: 'music.leaf.codes' },
 ]
 
-const rightLinks = [
-  { href: 'https://github.com/emmyleaf', label: 'GitHub' },
-  // { href: 'https://nextjs.org/docs', label: 'Docs' },
-]
+const rightLinks = [{ href: 'https://github.com/emmyleaf', label: 'GitHub' }]
 
 const Nav: NextComponentType = () => (
   <nav className="flex justify-between p-8">
