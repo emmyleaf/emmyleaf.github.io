@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="color-scheme" content="dark light">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Niramit&family=Zilla+Slab&display=swap">
+
+		<link rel="stylesheet" href="/common.css">
+
+        <script src="//unpkg.com/alpinejs@3" defer></script>
+
+        <script>
+            let theme = localStorage.theme
+            const prefersDark = (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
+            if (prefersDark || theme === 'dark') {
+                document.documentElement.classList.add('dark-theme')
+            } else {
+                document.documentElement.classList.remove('dark-theme')
+            }
+
+            document.addEventListener('alpine:init', () => {
+                Alpine.data('theming', () => ({
+                    theme: theme,
+                    toggle() {
+                        if (localStorage.theme === 'dark') {
+                            this.theme = 'light'
+                            localStorage.theme = 'light'
+                            document.documentElement.classList.remove('dark-theme')
+                        } else {
+                            this.theme = 'dark'
+                            localStorage.theme = 'dark'
+                            document.documentElement.classList.add('dark-theme')
+                        }
+                    },
+                }))
+            })
+        </script>
+
+		{{> head}}
+	</head>
+	<body>
+		<header>
+            <a id="header-title" href="/">
+                <span id="title-name">Emmy Leadley </span>
+                <span id="title-handle">@leafcodes</span>
+            </a>
+            <a id="theme-switch" x-data="theming" @click.prevent="toggle" href="">
+                <span x-show="theme === 'dark'">🌞</span>
+                <span x-show="theme !== 'dark'" display="none">🌚</span>
+            </a> 
+		    <nav>
+                <menu>
+				    <!-- TODO -->
+                </menu>
+            </nav>
+            </header>
+		<main>
+			{{> main}}
+		</main>
+	</body>
+</html>
