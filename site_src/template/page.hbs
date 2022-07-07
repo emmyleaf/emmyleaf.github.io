@@ -14,27 +14,26 @@
         <script src="//unpkg.com/alpinejs@3" defer></script>
 
         <script>
-            let theme = localStorage.theme
-            const prefersDark = (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
-            if (prefersDark || theme === 'dark') {
-                document.documentElement.classList.add('dark-theme')
+            let lsTheme = localStorage.theme
+            const prefersDark = (!lsTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)
+            if (prefersDark || lsTheme === 'dark') {
+                document.documentElement.classList.add('dark')
             } else {
-                document.documentElement.classList.remove('dark-theme')
+                document.documentElement.classList.remove('dark')
             }
 
             document.addEventListener('alpine:init', () => {
                 Alpine.data('theming', () => ({
-                    theme: theme,
+                    theme: lsTheme,
                     toggle() {
-                        if (localStorage.theme === 'dark') {
+                        if (this.theme === 'dark') {
                             this.theme = 'light'
-                            localStorage.theme = 'light'
-                            document.documentElement.classList.remove('dark-theme')
+                            document.documentElement.classList.remove('dark')
                         } else {
                             this.theme = 'dark'
-                            localStorage.theme = 'dark'
-                            document.documentElement.classList.add('dark-theme')
+                            document.documentElement.classList.add('dark')
                         }
+                        localStorage.theme = this.theme
                     },
                 }))
             })
@@ -48,16 +47,17 @@
                 <span id="title-name">Emmy Leadley </span>
                 <span id="title-handle">@leafcodes</span>
             </a>
-            <a id="theme-switch" x-data="theming" @click.prevent="toggle" href="">
-                <span x-show="theme === 'dark'">🌞</span>
-                <span x-show="theme !== 'dark'" display="none">🌚</span>
-            </a> 
 		    <nav>
-                <menu>
-				    <!-- TODO -->
-                </menu>
+                <a href="/blog">blog</a>
+                <a href="https://github.com/emmyleaf/">code</a>
+                <a href="https://leafcodes.bandcamp.com/">music</a>
+                <a href="/projects">projects</a>
+                <a id="theme-switch" x-data="theming" @click.prevent="toggle" href="">
+                    <span style="display: none;" x-show="theme === 'dark'">🌞</span>
+                    <span style="display: none;" x-show="theme !== 'dark'">🌚</span>
+                </a>
             </nav>
-            </header>
+        </header>
 		<main>
 			{{> main}}
 		</main>

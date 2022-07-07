@@ -2,7 +2,8 @@ use anyhow::{anyhow, Ok, Result};
 use axum::{http::StatusCode, response::IntoResponse, routing::get_service, Router};
 use handlebars::Handlebars;
 use hotwatch::blocking::{Flow, Hotwatch};
-use pulldown_cmark::{html, Parser};
+use pulldown_cmark::{html, LinkDef, Parser};
+use serde::{Deserialize, Serialize};
 use serde_json::json;
 use std::{
     ffi::OsStr,
@@ -19,6 +20,13 @@ const SOURCE_PATH: &str = "../site_src/";
 const CONTENT_DIR: &str = "content";
 const INCLUDE_DIR: &str = "include";
 const TEMPLATE_DIR: &str = "template";
+
+#[derive(Serialize, Deserialize, Debug)]
+struct Metadata {
+    template: String,
+    time: String,
+    title: String,
+}
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -90,12 +98,15 @@ fn write_html(handlebars: &Handlebars) -> Result<()> {
     for path in get_file_paths(content_path.as_str()) {
         let md_content = fs::read_to_string(&path)?;
         let md_parser = Parser::new_ext(&md_content, pulldown_cmark::Options::all());
+        let metadata = extract_metadata(&md_parser);
 
         let mut html_content = String::new();
         html::push_html(&mut html_content, md_parser);
 
-        // TODO: select correct template
-        let html_full = handlebars.render("index", &json!({ "main": html_content }))?;
+        let html_full = handlebars.render(
+            metadata.template.as_str(),
+            &json!({ "main": html_content, "metadata": metadata }),
+        )?;
 
         let bare_path = path.strip_prefix(&content_path)?;
         let html_path = Path::new(BUILD_PATH).join(bare_path).with_extension("html");
@@ -126,4 +137,15 @@ fn get_file_paths(path: &str) -> impl Iterator<Item = PathBuf> {
         .filter_map(Result::ok)
         .filter(|entry| entry.metadata().unwrap().is_file())
         .map(DirEntry::into_path)
+}
+
+fn extract_metadata(parser: &Parser) -> Metadata {
+    let refdefs = parser.reference_definitions();
+    let to_dest = |def: &LinkDef| def.dest.to_string();
+    let extract = |key: &str| refdefs.get(key).map(to_dest).unwrap_or(String::new());
+    Metadata {
+        template: extract("_metadata_:template"),
+        time: extract("_metadata_:time"),
+        title: extract("_metadata_:title"),
+    }
 }
