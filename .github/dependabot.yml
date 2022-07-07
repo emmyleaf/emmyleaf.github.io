@@ -1,0 +1,13 @@
+version: 2
+updates:
+  - package-ecosystem: "cargo"
+    directory: "/leafcodes_ssg/"
+    schedule:
+      interval: "weekly"
+    target-branch: leafcodes_ssg
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    target-branch: leafcodes_ssg

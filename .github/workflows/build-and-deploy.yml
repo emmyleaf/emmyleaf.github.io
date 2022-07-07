@@ -1,0 +1,29 @@
+name: Build and Deploy
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - leafcodes_ssg
+permissions:
+  contents: write
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+
+      - name: Setup Rust ⚙️
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Build 🔧
+        run: ./build.sh
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: main
+          folder: build
+          clean: true
