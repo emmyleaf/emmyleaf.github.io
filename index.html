@@ -1,1 +1,72 @@
-<!DOCTYPE html><html><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width"/><meta name="next-head-count" content="2"/><link rel="preload" href="/_next/static/css/e2eecf9d9c73d1d3c41c.css" as="style"/><link rel="stylesheet" href="/_next/static/css/e2eecf9d9c73d1d3c41c.css" data-n-g=""/><noscript data-n-css=""></noscript><link rel="preload" href="/_next/static/chunks/webpack-50bee04d1dc61f8adf5b.js" as="script"/><link rel="preload" href="/_next/static/chunks/framework.e3de07479da4f2477dea.js" as="script"/><link rel="preload" href="/_next/static/chunks/f6078781a05fe1bcb0902d23dbbb2662c8d200b3.ab4ca2b95977449d2f3a.js" as="script"/><link rel="preload" href="/_next/static/chunks/main-e61b213de90ce126994f.js" as="script"/><link rel="preload" href="/_next/static/chunks/pages/_app-7af3cfdbd444db6262e3.js" as="script"/><link rel="preload" href="/_next/static/chunks/pages/index-6681132d1f94a50b66fc.js" as="script"/></head><body><div id="__next"><nav class="flex justify-between p-8"><ul class="flex flex-col items-left justify-between space-y-4"><li><a href="https://emmy.leaf.codes" class="no-underline button">emmy.leaf.codes</a></li></ul><ul class="flex items-right justify-between space-x-4"><li><a href="https://github.com/emmyleaf" class="no-underline button">GitHub</a></li></ul></nav><header><h1>Emmy Leadley</h1></header></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{}},"page":"/","query":{},"buildId":"tQIdKz3ykBRoUmIWgj-cu","nextExport":true,"autoExport":true,"isFallback":false}</script><script nomodule="" src="/_next/static/chunks/polyfills-aa54647e89713304033b.js"></script><script src="/_next/static/chunks/webpack-50bee04d1dc61f8adf5b.js" async=""></script><script src="/_next/static/chunks/framework.e3de07479da4f2477dea.js" async=""></script><script src="/_next/static/chunks/f6078781a05fe1bcb0902d23dbbb2662c8d200b3.ab4ca2b95977449d2f3a.js" async=""></script><script src="/_next/static/chunks/main-e61b213de90ce126994f.js" async=""></script><script src="/_next/static/chunks/pages/_app-7af3cfdbd444db6262e3.js" async=""></script><script src="/_next/static/chunks/pages/index-6681132d1f94a50b66fc.js" async=""></script><script src="/_next/static/tQIdKz3ykBRoUmIWgj-cu/_buildManifest.js" async=""></script><script src="/_next/static/tQIdKz3ykBRoUmIWgj-cu/_ssgManifest.js" async=""></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="color-scheme" content="dark light">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Niramit&family=Zilla+Slab&display=swap">
+
+		<link rel="stylesheet" href="/common.css">
+
+        <script src="//unpkg.com/alpinejs@3" defer></script>
+
+        <script>
+            let theme = localStorage.theme
+            const prefersDark = (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
+            if (prefersDark || theme === 'dark') {
+                document.documentElement.classList.add('dark-theme')
+            } else {
+                document.documentElement.classList.remove('dark-theme')
+            }
+
+            document.addEventListener('alpine:init', () => {
+                Alpine.data('theming', () => ({
+                    theme: theme,
+                    toggle() {
+                        if (localStorage.theme === 'dark') {
+                            this.theme = 'light'
+                            localStorage.theme = 'light'
+                            document.documentElement.classList.remove('dark-theme')
+                        } else {
+                            this.theme = 'dark'
+                            localStorage.theme = 'dark'
+                            document.documentElement.classList.add('dark-theme')
+                        }
+                    },
+                }))
+            })
+        </script>
+
+				<title>leafcodes</title>
+	</head>
+	<body>
+		<header>
+            <a id="header-title" href="/">
+                <span id="title-name">Emmy Leadley </span>
+                <span id="title-handle">@leafcodes</span>
+            </a>
+            <a id="theme-switch" x-data="theming" @click.prevent="toggle" href="">
+                <span x-show="theme === 'dark'">🌞</span>
+                <span x-show="theme !== 'dark'" display="none">🌚</span>
+            </a> 
+		    <nav>
+                <menu>
+				    <!-- TODO -->
+                </menu>
+            </nav>
+            </header>
+		<main>
+					<h1>yosawup</h1>
+			<p>yosawup, world!</p>
+			<p>Etiam ac ante non massa fringilla eleifend. Sed volutpat ante mattis purus molestie, eget auctor neque varius. Maecenas tempor vel diam in euismod. Curabitur ac pulvinar justo. Duis maximus finibus dui, sit amet aliquam odio viverra vel. Nulla ultricies felis lobortis ante eleifend, a lobortis sapien imperdiet. Mauris quis convallis justo, in varius massa.</p>
+			<p>Cras ut ipsum vel lacus bibendum congue eu ac augue. Vestibulum ut accumsan diam. Mauris a semper est, vitae euismod neque. Vestibulum hendrerit eleifend lectus, eu dictum lorem mollis vitae. Aenean a rhoncus ex. Aliquam in nulla vitae justo accumsan gravida. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Mauris et commodo lectus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Morbi sodales lectus lacus, at tempus eros auctor id.</p>
+			<p>Pellentesque faucibus aliquet bibendum. Donec tristique purus luctus suscipit accumsan. Proin tempus viverra nisl quis interdum. Sed gravida, lorem vitae faucibus convallis, neque eros interdum justo, ut congue erat lorem ac nunc. Cras non massa iaculis, finibus purus non, egestas eros. Curabitur tortor diam, auctor vitae metus in, ornare lacinia ex. Nunc id ullamcorper augue. Proin nec pretium quam. Curabitur leo dui, aliquam vitae suscipit luctus, pharetra ac sem. Sed ultrices lacus id lorem mattis lacinia. Praesent molestie metus in urna fringilla sollicitudin. Vivamus maximus eu neque quis ultrices. Sed sed purus nec lectus pulvinar faucibus. Mauris mi eros, scelerisque eget ante quis, tempor ultricies sapien.</p>
+			<p>Suspendisse non egestas nisl. Nullam eget auctor tellus. Praesent cursus rutrum mollis. Nulla at felis ut quam pulvinar auctor eget sed nisl. Donec ut porta sapien, a maximus mauris. Suspendisse lacinia eros vitae lorem posuere, ut finibus urna finibus. Pellentesque vel nunc eu sapien viverra fringilla et sit amet quam. Donec justo velit, porttitor quis bibendum sit amet, placerat vel lectus.</p>
+			<p>Duis ullamcorper dolor ut tempus vehicula. Etiam rutrum vitae velit vel maximus. Vivamus erat velit, condimentum vitae semper eu, aliquam id orci. Fusce sed dui eros. Nunc eu ex fringilla, gravida tortor in, tincidunt ligula. Mauris eget vestibulum magna. Aliquam ac scelerisque urna, id vehicula libero. Praesent pretium nec libero vitae aliquet. Praesent non feugiat ante, id placerat nisi. Donec suscipit pellentesque lorem, quis ultricies elit volutpat commodo. Aliquam porttitor felis bibendum dolor porta viverra. Mauris ac facilisis magna. Maecenas mauris neque, tristique vitae tempus non, ullamcorper eu leo. Proin ultrices ante libero. Quisque nisi sem, tempus sed tristique sit amet, porttitor nec nulla.</p>
+
+		</main>
+	</body>
+</html>

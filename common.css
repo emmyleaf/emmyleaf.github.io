@@ -1,0 +1,134 @@
+/* First of all, some basic css reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+img,
+video {
+  height: auto;
+  max-width: 100%;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+menu {
+  list-style: none;
+}
+
+/* Light/dark mode variables */
+:root {
+  --bg-color: #fccfdf;
+  --text-color: #333333;
+  --title-color: #b90b4a;
+  --subtitle-color: #D65D89;
+  --hover-color: #F1C4D5;
+  --content-bg-color: #F1C4D5;
+}
+
+:root.dark-theme {
+  --bg-color: #3B0418;
+  --text-color: #F1C4D5;
+  --title-color: #b90b4a;
+  --subtitle-color: #D65D89;
+  --hover-color: #47041D;
+  --content-bg-color: #330315;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #3B0418;
+    --text-color: #F1C4D5;
+    --title-color: #b90b4a;
+    --subtitle-color: #D65D89;
+    --hover-color: #47041D;
+    --content-bg-color: #330315;
+  }
+} */
+
+/* Common styles */
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Niramit", sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Zilla Slab", serif;
+  color: var(--title-color);
+}
+
+header {
+  height: 100px;
+  padding: 10px;
+}
+
+#header-title {
+  display: inline-block;
+  height: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  text-decoration: none;
+  
+  transition: all 0.25s;
+}
+
+#header-title:hover {
+  background-color: var(--hover-color);
+}
+
+#title-name {
+  color: var(--title-color);
+  font-family: "Zilla Slab", serif;
+  font-size: 3rem;
+  line-height: 60px;
+  text-decoration: none;
+  vertical-align: middle;
+}
+
+#title-handle {
+  color: var(--subtitle-color);
+  font-size: 1.8rem;
+  line-height: 60px;
+  text-decoration: none;
+  vertical-align: middle;
+}
+
+header nav {
+  float: right;
+  height: 100%;
+  padding: 10px;
+}
+
+#theme-switch {
+  float: right;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 1.8rem;
+  text-decoration: none;
+  
+  transition: all 0.25s;
+}
+
+#theme-switch:hover {
+  background-color: var(--hover-color);
+}
+
+main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background-color: var(--content-bg-color);
+}
