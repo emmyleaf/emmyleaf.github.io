@@ -6,6 +6,8 @@ edition = "2021"
 [dependencies]
 anyhow = "1.0.58"
 axum = "0.5.11"
+chrono = "0.4.19"
+const_format = "0.2.26"
 handlebars = "4.3.1"
 hotwatch = "0.4.6"
 pulldown-cmark = { version = "0.9.1", default-features = false, features = [

@@ -72,7 +72,7 @@ h6 {
   color: var(--title-color);
 }
 
-header {
+body>header {
   height: 100px;
   width: 100%;
   max-width: 1200px;
@@ -111,7 +111,7 @@ header {
   vertical-align: middle;
 }
 
-header nav {
+body>header nav {
   height: 80px;
   padding: 10px;
   margin: 0;
@@ -123,7 +123,7 @@ header nav {
   justify-content: space-around;
 }
 
-header nav a {
+body>header nav a {
   height: 100%;
   padding: 10px;
   margin: 0;
@@ -133,7 +133,7 @@ header nav a {
   text-align: center;
 }
 
-header nav a:hover {
+body>header nav a:hover {
   background-color: var(--content-hover-color);
   transition: background-color 0.2s;
 }
@@ -178,7 +178,7 @@ main p a:link {
 
 /* Responsive media queries */
 @media screen and (max-width: 840px) {
-  header {
+  body>header {
     height: 190px;
     flex-direction: column;
   }

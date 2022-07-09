@@ -1,9 +1,11 @@
 use anyhow::{anyhow, Ok, Result};
 use axum::{http::StatusCode, response::IntoResponse, routing::get_service, Router};
+use chrono::{offset::Utc, DateTime};
+use const_format::concatcp;
 use handlebars::Handlebars;
 use hotwatch::blocking::{Flow, Hotwatch};
 use pulldown_cmark::{html, LinkDef, Parser};
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 use serde_json::json;
 use std::{
     ffi::OsStr,
@@ -17,69 +19,53 @@ use walkdir::{DirEntry, WalkDir};
 const BUILD_PATH: &str = "../build/";
 const SOURCE_PATH: &str = "../site_src/";
 
-const CONTENT_DIR: &str = "content";
-const INCLUDE_DIR: &str = "include";
-const TEMPLATE_DIR: &str = "template";
+const CONTENT_PATH: &str = concatcp!(SOURCE_PATH, "content");
+const INCLUDE_PATH: &str = concatcp!(SOURCE_PATH, "include");
+const TEMPLATE_PATH: &str = concatcp!(SOURCE_PATH, "template");
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Debug)]
 struct Metadata {
     template: String,
-    time: String,
     title: String,
+    time: String,
+    date_string: Option<String>,
 }
 
-#[tokio::main]
-async fn main() -> Result<()> {
+#[derive(Debug)]
+struct Page {
+    content: String,
+    metadata: Metadata,
+    datetime: DateTime<Utc>,
+    out_path: PathBuf,
+}
+
+#[derive(Serialize, Debug)]
+struct BlogPost {
+    title: String,
+    date_string: String,
+    filename: String,
+}
+
+#[derive(Debug)]
+struct Site {
+    pages: Vec<Page>,
+    blog_posts: Vec<BlogPost>,
+}
+
+fn main() -> Result<()> {
     match std::env::args().nth(1) {
-        Some(str) if str.as_str() == "build" => build(&mut Handlebars::new()),
-        Some(str) if str.as_str() == "dev" => dev(Handlebars::new()).await,
-        _ => Err(anyhow!(
-            "Please provide either 'build' or 'dev' as first argument."
-        )),
+        Some(str) if str.as_str() == "build" => {
+            let mut handlebars = Handlebars::new();
+            register_templates(&mut handlebars)?;
+            build(&mut handlebars)
+        }
+        Some(str) if str.as_str() == "dev" => dev(),
+        _ => Err(anyhow!("Please provide either 'build' or 'dev' as first argument.")),
     }
 }
 
-fn build(handlebars: &mut Handlebars) -> Result<()> {
-    register_templates(handlebars)
-        .and(write_html(handlebars))
-        .and(copy_includes())
-}
-
-async fn dev(mut handlebars: Handlebars<'static>) -> Result<()> {
-    handlebars.set_dev_mode(true);
-    build(&mut handlebars)?;
-
-    tokio::task::spawn_blocking(move || {
-        let watch_handler = move |_| {
-            write_html(&handlebars).unwrap();
-            copy_includes().unwrap();
-            println!("Site rebuilt!");
-            Flow::Continue
-        };
-        let mut hotwatch = Hotwatch::new().unwrap();
-        hotwatch.watch(SOURCE_PATH, watch_handler).unwrap();
-        hotwatch.run();
-    });
-
-    let service = get_service(ServeDir::new(BUILD_PATH)).handle_error(handle_error);
-    let app = Router::new().fallback(service);
-    let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
-
-    println!("Serving site on {}", addr);
-    axum::Server::bind(&addr)
-        .serve(app.into_make_service())
-        .await?;
-
-    Ok(())
-}
-
-async fn handle_error(_err: std::io::Error) -> impl IntoResponse {
-    (StatusCode::INTERNAL_SERVER_ERROR, "Something went wrong...")
-}
-
 fn register_templates(handlebars: &mut Handlebars) -> Result<()> {
-    let template_path = [SOURCE_PATH, TEMPLATE_DIR].concat();
-    for path in get_file_paths(template_path.as_str()) {
+    for path in get_file_paths(TEMPLATE_PATH) {
         let name = &path
             .file_stem()
             .and_then(OsStr::to_str)
@@ -90,38 +76,101 @@ fn register_templates(handlebars: &mut Handlebars) -> Result<()> {
     Ok(())
 }
 
-fn write_html(handlebars: &Handlebars) -> Result<()> {
-    // Clean build directory
-    _ = fs::remove_dir_all(BUILD_PATH);
+fn build(handlebars: &mut Handlebars) -> Result<()> {
+    _ = fs::remove_dir_all(BUILD_PATH); // Clean build directory
+    let site = parse_site()?;
+    generate_html(handlebars, site)?;
+    copy_includes()
+}
 
-    let content_path = [SOURCE_PATH, CONTENT_DIR].concat();
-    for path in get_file_paths(content_path.as_str()) {
+#[tokio::main]
+async fn dev() -> Result<()> {
+    let mut handlebars = Handlebars::new();
+    handlebars.set_dev_mode(true);
+    register_templates(&mut handlebars)?;
+    build(&mut handlebars)?;
+
+    tokio::task::spawn_blocking(move || {
+        let watch_handler = move |_| {
+            build(&mut handlebars).unwrap();
+            println!("Site rebuilt!");
+            Flow::Continue
+        };
+        let mut hotwatch = Hotwatch::new().unwrap();
+        hotwatch.watch(SOURCE_PATH, watch_handler).unwrap();
+        hotwatch.run();
+    });
+
+    async fn handle_error(_err: std::io::Error) -> impl IntoResponse {
+        (StatusCode::INTERNAL_SERVER_ERROR, "Something went wrong...")
+    }
+
+    let service = get_service(ServeDir::new(BUILD_PATH)).handle_error(handle_error);
+    let app = Router::new().fallback(service);
+    let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
+
+    println!("Serving site on {}", addr);
+    axum::Server::bind(&addr).serve(app.into_make_service()).await?;
+
+    Ok(())
+}
+
+fn parse_site() -> Result<Site> {
+    let mut pages = Vec::new();
+    for path in get_file_paths(CONTENT_PATH) {
         let md_content = fs::read_to_string(&path)?;
         let md_parser = Parser::new_ext(&md_content, pulldown_cmark::Options::all());
-        let metadata = extract_metadata(&md_parser);
+        let mut metadata = extract_metadata(&md_parser);
+        let datetime = DateTime::parse_from_rfc3339(&metadata.time)
+            .map(DateTime::<Utc>::from)
+            .unwrap_or(Utc::now());
+        metadata.date_string.replace(datetime.format("%A, %d %B %Y").to_string());
 
-        let mut html_content = String::new();
-        html::push_html(&mut html_content, md_parser);
+        let mut content = String::new();
+        html::push_html(&mut content, md_parser);
 
-        let html_full = handlebars.render(
-            metadata.template.as_str(),
-            &json!({ "main": html_content, "metadata": metadata }),
-        )?;
+        let bare_path = path.strip_prefix(CONTENT_PATH)?;
+        let out_path = Path::new(BUILD_PATH).join(bare_path).with_extension("html");
 
-        let bare_path = path.strip_prefix(&content_path)?;
-        let html_path = Path::new(BUILD_PATH).join(bare_path).with_extension("html");
+        pages.push(Page { content, metadata, datetime, out_path })
+    }
 
-        fs::create_dir_all(html_path.parent().unwrap())?;
-        fs::write(&html_path, html_full)?;
+    // sort by time
+    pages.sort_by(|a, b| a.datetime.cmp(&b.datetime));
+
+    // collate blog post metadata
+    let blog_posts = pages
+        .iter()
+        .filter(|page| page.metadata.template.eq("blog_post"))
+        .map(|page| BlogPost {
+            title: page.metadata.title.clone(),
+            date_string: page.metadata.date_string.as_ref().unwrap().clone(),
+            filename: page.out_path.as_path().file_name().unwrap().to_string_lossy().to_string(),
+        })
+        .collect();
+
+    Ok(Site { pages, blog_posts })
+}
+
+fn generate_html(handlebars: &Handlebars, site: Site) -> Result<()> {
+    for page in &site.pages {
+        let mut data = json!({ "content": &page.content, "metadata": &page.metadata });
+        if page.metadata.template.eq("blog_index") {
+            data.as_object_mut().unwrap().insert("blog_posts".to_string(), json!(&site.blog_posts));
+        }
+
+        let html = handlebars.render(&page.metadata.template, &data)?;
+
+        fs::create_dir_all(page.out_path.as_path().parent().unwrap())?;
+        fs::write(&page.out_path, html)?;
     }
 
     Ok(())
 }
 
 fn copy_includes() -> Result<()> {
-    let include_path = [SOURCE_PATH, INCLUDE_DIR].concat();
-    for from_path in get_file_paths(include_path.as_str()) {
-        let bare_path = from_path.strip_prefix(&include_path)?;
+    for from_path in get_file_paths(INCLUDE_PATH) {
+        let bare_path = from_path.strip_prefix(INCLUDE_PATH)?;
         let to_path = Path::new(BUILD_PATH).join(bare_path);
 
         fs::create_dir_all(to_path.parent().unwrap())?;
@@ -145,7 +194,8 @@ fn extract_metadata(parser: &Parser) -> Metadata {
     let extract = |key: &str| refdefs.get(key).map(to_dest).unwrap_or(String::new());
     Metadata {
         template: extract("_metadata_:template"),
+        title: str::replace(&extract("_metadata_:title"), "_", " "),
         time: extract("_metadata_:time"),
-        title: extract("_metadata_:title"),
+        date_string: None,
     }
 }
