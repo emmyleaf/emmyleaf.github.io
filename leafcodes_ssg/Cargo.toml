@@ -5,7 +5,7 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.58"
-axum = "0.5.11"
+axum = "0.5.12"
 const_format = "0.2.26"
 handlebars = "4.3.1"
 hotwatch = "0.4.6"
