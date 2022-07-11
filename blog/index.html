@@ -11,8 +11,17 @@
 
 		<link rel="stylesheet" href="/common.css">
 
+        <script defer src="https://unpkg.com/petite-vue"></script>
         <script defer src="/theme.js"></script>
-        <script defer src="//unpkg.com/alpinejs@3"></script>
+
+        <script>
+            const prefersDark = (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
+            if (prefersDark || localStorage.theme === 'dark') {
+                document.documentElement.classList.add('dark')
+            } else {
+                document.documentElement.classList.remove('dark')
+            }
+        </script>
 
 				<meta name="title" content="blog">
 				<title>blog • leafcodes</title>
@@ -28,9 +37,9 @@
                 <a href="https://github.com/emmyleaf/">code</a>
                 <a href="https://leafcodes.bandcamp.com/">music</a>
                 <a href="/projects">projects</a>
-                <a id="theme-switch" x-data="theming" @click.prevent="toggle" href="">
-                    <span style="display: none;" x-show="theme === 'dark'">🌞</span>
-                    <span style="display: none;" x-show="theme !== 'dark'">🌚</span>
+                <a id="theme-switch" @click.prevent="toggle" href="">
+                    <span v-cloak v-show="theme === 'dark'">🌞</span>
+                    <span v-cloak v-show="theme !== 'dark'">🌚</span>
                 </a>
             </nav>
         </header>
