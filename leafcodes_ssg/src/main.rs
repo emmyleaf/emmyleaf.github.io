@@ -181,11 +181,11 @@ fn get_file_paths(path: &str) -> impl Iterator<Item = PathBuf> {
 
 fn extract_metadata(parser: &Parser) -> Metadata {
     let refdefs = parser.reference_definitions();
-    let to_dest = |def: &LinkDef| def.dest.to_string();
-    let extract = |key: &str| refdefs.get(key).map(to_dest).unwrap_or(String::new());
+    let to_title = |def: &LinkDef| def.title.as_deref().unwrap().to_string();
+    let extract = |key: &str| refdefs.get(key).map(to_title).unwrap_or(String::new());
     Metadata {
         template: extract("_metadata_:template"),
-        title: str::replace(&extract("_metadata_:title"), "_", " "),
+        title: extract("_metadata_:title"),
         date: extract("_metadata_:date"),
     }
 }
