@@ -11,33 +11,8 @@
 
 		<link rel="stylesheet" href="/common.css">
 
-        <script src="//unpkg.com/alpinejs@3" defer></script>
-
-        <script>
-            let lsTheme = localStorage.theme
-            const prefersDark = (!lsTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)
-            if (prefersDark || lsTheme === 'dark') {
-                document.documentElement.classList.add('dark')
-            } else {
-                document.documentElement.classList.remove('dark')
-            }
-
-            document.addEventListener('alpine:init', () => {
-                Alpine.data('theming', () => ({
-                    theme: lsTheme,
-                    toggle() {
-                        if (this.theme === 'dark') {
-                            this.theme = 'light'
-                            document.documentElement.classList.remove('dark')
-                        } else {
-                            this.theme = 'dark'
-                            document.documentElement.classList.add('dark')
-                        }
-                        localStorage.theme = this.theme
-                    },
-                }))
-            })
-        </script>
+        <script defer src="/theme.js"></script>
+        <script defer src="//unpkg.com/alpinejs@3"></script>
 
 				<meta name="title" content="new site!">
 				<title>new site! • leafcodes</title>
@@ -63,9 +38,17 @@
 			        <article>
 			            <header>
 			                <h1>new site!</h1>
-			                <time datetime="">Sunday, 10 July 2022</time>
+			                <time datetime="2022-07-11">2022-07-11</time>
 			            </header>
-			            
+			            <p>when i decided to make this site, i knew i wanted it to be plain html files hosted on github pages. there are a wide variety of static site generators up to this task, but i felt like creating one myself would be a fun little project. keep reading to see how i did it!</p>
+			<h2>previous sites</h2>
+			<p>i first learned web development about 15 years ago, at which point i was editing phpbb forums and wordpress blogs for myself and friends. thankfully, society has progressed past the need for php, and javascript &amp; css have since gained a lot of bells and whistles.</p>
+			<h2>rust 🦀</h2>
+			<h2>templates &amp; markdown</h2>
+			<h2>plain ol’ css</h2>
+			<h2>a tiny sprinkle of js</h2>
+			<h2>conclusions</h2>
+
 			        </article>
 		</main>
 	</body>

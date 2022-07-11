@@ -11,33 +11,8 @@
 
 		<link rel="stylesheet" href="/common.css">
 
-        <script src="//unpkg.com/alpinejs@3" defer></script>
-
-        <script>
-            let lsTheme = localStorage.theme
-            const prefersDark = (!lsTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)
-            if (prefersDark || lsTheme === 'dark') {
-                document.documentElement.classList.add('dark')
-            } else {
-                document.documentElement.classList.remove('dark')
-            }
-
-            document.addEventListener('alpine:init', () => {
-                Alpine.data('theming', () => ({
-                    theme: lsTheme,
-                    toggle() {
-                        if (this.theme === 'dark') {
-                            this.theme = 'light'
-                            document.documentElement.classList.remove('dark')
-                        } else {
-                            this.theme = 'dark'
-                            document.documentElement.classList.add('dark')
-                        }
-                        localStorage.theme = this.theme
-                    },
-                }))
-            })
-        </script>
+        <script defer src="/theme.js"></script>
+        <script defer src="//unpkg.com/alpinejs@3"></script>
 
 				<meta name="title" content="blog">
 				<title>blog • leafcodes</title>
@@ -65,7 +40,7 @@
 			        <nav class="blog-index">
                 <div class="blog-entry">
 			                    <a href="/blog/site-build.html">new site!</a>
-			                    <span class="blog-entry-date">Sunday, 10 July 2022</span>
+			                    <time datetime="2022-07-11">2022-07-11</time>
 			                </div>
         </nav>
 		</main>
