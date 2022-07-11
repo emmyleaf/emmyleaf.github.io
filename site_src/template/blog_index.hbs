@@ -9,7 +9,7 @@
             {{#each blog_posts}}
                 <div class="blog-entry">
                     <a href="/blog/{{this.filename}}">{{this.title}}</a>
-                    <span class="blog-entry-date">{{this.date_string}}</span>
+                    <time datetime="{{this.date}}">{{this.date}}</time>
                 </div>
             {{/each}}
         </nav>

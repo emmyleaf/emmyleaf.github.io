@@ -1,6 +1,5 @@
 use anyhow::{anyhow, Ok, Result};
 use axum::{http::StatusCode, response::IntoResponse, routing::get_service, Router};
-use chrono::{offset::Utc, DateTime};
 use const_format::concatcp;
 use handlebars::Handlebars;
 use hotwatch::blocking::{Flow, Hotwatch};
@@ -27,29 +26,21 @@ const TEMPLATE_PATH: &str = concatcp!(SOURCE_PATH, "template");
 struct Metadata {
     template: String,
     title: String,
-    time: String,
-    date_string: Option<String>,
+    date: String,
 }
 
 #[derive(Debug)]
 struct Page {
     content: String,
     metadata: Metadata,
-    datetime: DateTime<Utc>,
     out_path: PathBuf,
 }
 
 #[derive(Serialize, Debug)]
-struct BlogPost {
-    title: String,
-    date_string: String,
-    filename: String,
-}
-
-#[derive(Debug)]
-struct Site {
-    pages: Vec<Page>,
-    blog_posts: Vec<BlogPost>,
+struct BlogPost<'a> {
+    title: &'a str,
+    date: &'a str,
+    filename: &'a str,
 }
 
 fn main() -> Result<()> {
@@ -78,8 +69,9 @@ fn register_templates(handlebars: &mut Handlebars) -> Result<()> {
 
 fn build(handlebars: &mut Handlebars) -> Result<()> {
     _ = fs::remove_dir_all(BUILD_PATH); // Clean build directory
-    let site = parse_site()?;
-    generate_html(handlebars, site)?;
+    let pages = parse_pages()?;
+    let blog_posts = process_blog_posts(&pages)?;
+    generate_html(handlebars, &pages, &blog_posts)?;
     copy_includes()
 }
 
@@ -115,16 +107,12 @@ async fn dev() -> Result<()> {
     Ok(())
 }
 
-fn parse_site() -> Result<Site> {
+fn parse_pages() -> Result<Vec<Page>> {
     let mut pages = Vec::new();
     for path in get_file_paths(CONTENT_PATH) {
         let md_content = fs::read_to_string(&path)?;
         let md_parser = Parser::new_ext(&md_content, pulldown_cmark::Options::all());
-        let mut metadata = extract_metadata(&md_parser);
-        let datetime = DateTime::parse_from_rfc3339(&metadata.time)
-            .map(DateTime::<Utc>::from)
-            .unwrap_or(Utc::now());
-        metadata.date_string.replace(datetime.format("%A, %d %B %Y").to_string());
+        let metadata = extract_metadata(&md_parser);
 
         let mut content = String::new();
         html::push_html(&mut content, md_parser);
@@ -132,31 +120,34 @@ fn parse_site() -> Result<Site> {
         let bare_path = path.strip_prefix(CONTENT_PATH)?;
         let out_path = Path::new(BUILD_PATH).join(bare_path).with_extension("html");
 
-        pages.push(Page { content, metadata, datetime, out_path })
+        pages.push(Page { content, metadata, out_path })
     }
 
-    // sort by time
-    pages.sort_by(|a, b| a.datetime.cmp(&b.datetime));
+    Ok(pages)
+}
 
-    // collate blog post metadata
-    let blog_posts = pages
+fn process_blog_posts(pages: &[Page]) -> Result<Vec<BlogPost>> {
+    let mut blog_posts = pages
         .iter()
         .filter(|page| page.metadata.template.eq("blog_post"))
         .map(|page| BlogPost {
-            title: page.metadata.title.clone(),
-            date_string: page.metadata.date_string.as_ref().unwrap().clone(),
-            filename: page.out_path.as_path().file_name().unwrap().to_string_lossy().to_string(),
+            title: &page.metadata.title,
+            date: &page.metadata.date,
+            filename: page.out_path.as_path().file_name().unwrap().to_str().unwrap(),
         })
-        .collect();
+        .collect::<Vec<BlogPost>>();
 
-    Ok(Site { pages, blog_posts })
+    // sort by date desc
+    blog_posts.sort_by(|a, b| b.date.cmp(&a.date));
+
+    Ok(blog_posts)
 }
 
-fn generate_html(handlebars: &Handlebars, site: Site) -> Result<()> {
-    for page in &site.pages {
+fn generate_html(handlebars: &Handlebars, pages: &[Page], blog_posts: &[BlogPost]) -> Result<()> {
+    for page in pages {
         let mut data = json!({ "content": &page.content, "metadata": &page.metadata });
         if page.metadata.template.eq("blog_index") {
-            data.as_object_mut().unwrap().insert("blog_posts".to_string(), json!(&site.blog_posts));
+            data.as_object_mut().unwrap().insert("blog_posts".to_string(), json!(blog_posts));
         }
 
         let html = handlebars.render(&page.metadata.template, &data)?;
@@ -195,7 +186,6 @@ fn extract_metadata(parser: &Parser) -> Metadata {
     Metadata {
         template: extract("_metadata_:template"),
         title: str::replace(&extract("_metadata_:title"), "_", " "),
-        time: extract("_metadata_:time"),
-        date_string: None,
+        date: extract("_metadata_:date"),
     }
 }
