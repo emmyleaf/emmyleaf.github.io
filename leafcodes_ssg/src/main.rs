@@ -1,18 +1,14 @@
 use anyhow::{anyhow, Ok, Result};
-use axum::{http::StatusCode, response::IntoResponse, routing::get_service, Router};
 use const_format::concatcp;
 use handlebars::Handlebars;
-use hotwatch::blocking::{Flow, Hotwatch};
 use pulldown_cmark::{html, LinkDef, Parser};
 use serde::Serialize;
 use serde_json::json;
 use std::{
     ffi::OsStr,
     fs,
-    net::SocketAddr,
     path::{Path, PathBuf},
 };
-use tower_http::services::ServeDir;
 use walkdir::{DirEntry, WalkDir};
 
 const BUILD_PATH: &str = "../build/";
@@ -44,14 +40,15 @@ struct BlogPost<'a> {
 }
 
 fn main() -> Result<()> {
-    match std::env::args().nth(1) {
-        Some(str) if str.as_str() == "build" => {
-            let mut handlebars = Handlebars::new();
-            register_templates(&mut handlebars)?;
-            build(&mut handlebars)
-        }
-        Some(str) if str.as_str() == "dev" => dev(),
-        _ => Err(anyhow!("Please provide either 'build' or 'dev' as first argument.")),
+    #[cfg(feature = "dev")]
+    {
+        dev()
+    }
+    #[cfg(not(feature = "dev"))]
+    {
+        let mut handlebars = Handlebars::new();
+        register_templates(&mut handlebars)?;
+        build(&mut handlebars)
     }
 }
 
@@ -75,8 +72,14 @@ fn build(handlebars: &mut Handlebars) -> Result<()> {
     copy_includes()
 }
 
+#[cfg(feature = "dev")]
 #[tokio::main]
 async fn dev() -> Result<()> {
+    use axum::{http::StatusCode, response::IntoResponse, routing::get_service, Router};
+    use hotwatch::blocking::{Flow, Hotwatch};
+    use std::net::SocketAddr;
+    use tower_http::services::ServeDir;
+
     let mut handlebars = Handlebars::new();
     handlebars.set_dev_mode(true);
     register_templates(&mut handlebars)?;
