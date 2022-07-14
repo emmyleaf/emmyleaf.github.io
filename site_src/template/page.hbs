@@ -9,6 +9,9 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Niramit&family=Zilla+Slab&display=swap">
 
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
 		<link rel="stylesheet" href="/common.css">
 
         <script defer src="https://unpkg.com/petite-vue"></script>
@@ -36,7 +39,7 @@
                 <a href="https://github.com/emmyleaf/">code</a>
                 <a href="https://leafcodes.bandcamp.com/">music</a>
                 <a href="/projects">projects</a>
-                <a id="theme-switch" @click.prevent="toggle" href="">
+                <a id="theme-switch" @click.prevent="toggle">
                     <span v-cloak v-show="theme === 'dark'">🌞</span>
                     <span v-cloak v-show="theme !== 'dark'">🌚</span>
                 </a>

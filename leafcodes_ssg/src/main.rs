@@ -46,13 +46,13 @@ fn main() -> Result<()> {
     }
     #[cfg(not(feature = "dev"))]
     {
-        let mut handlebars = Handlebars::new();
-        register_templates(&mut handlebars)?;
-        build(&mut handlebars)
+        build(&init_handlebars()?)
     }
 }
 
-fn register_templates(handlebars: &mut Handlebars) -> Result<()> {
+fn init_handlebars() -> Result<Handlebars<'static>> {
+    let mut handlebars = Handlebars::new();
+    handlebars.set_dev_mode(cfg!(feature = "dev"));
     for path in get_file_paths(TEMPLATE_PATH) {
         let name = &path
             .file_stem()
@@ -60,11 +60,10 @@ fn register_templates(handlebars: &mut Handlebars) -> Result<()> {
             .ok_or(anyhow!("Bad file path in template directory"))?;
         handlebars.register_template_file(name, &path)?;
     }
-
-    Ok(())
+    Ok(handlebars)
 }
 
-fn build(handlebars: &mut Handlebars) -> Result<()> {
+fn build(handlebars: &Handlebars) -> Result<()> {
     _ = fs::remove_dir_all(BUILD_PATH); // Clean build directory
     let pages = parse_pages()?;
     let blog_posts = process_blog_posts(&pages)?;
@@ -75,19 +74,17 @@ fn build(handlebars: &mut Handlebars) -> Result<()> {
 #[cfg(feature = "dev")]
 #[tokio::main]
 async fn dev() -> Result<()> {
-    use axum::{http::StatusCode, response::IntoResponse, routing::get_service, Router};
+    use axum::{http::StatusCode, response::IntoResponse, routing::get_service, Router, Server};
     use hotwatch::blocking::{Flow, Hotwatch};
     use std::net::SocketAddr;
     use tower_http::services::ServeDir;
 
-    let mut handlebars = Handlebars::new();
-    handlebars.set_dev_mode(true);
-    register_templates(&mut handlebars)?;
-    build(&mut handlebars)?;
+    let handlebars = init_handlebars()?;
+    build(&handlebars)?;
 
     tokio::task::spawn_blocking(move || {
         let watch_handler = move |_| {
-            build(&mut handlebars).unwrap();
+            build(&handlebars).unwrap();
             println!("Site rebuilt!");
             Flow::Continue
         };
@@ -105,7 +102,7 @@ async fn dev() -> Result<()> {
     let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
 
     println!("Serving site on {}", addr);
-    axum::Server::bind(&addr).serve(app.into_make_service()).await?;
+    Server::bind(&addr).serve(app.into_make_service()).await?;
 
     Ok(())
 }
