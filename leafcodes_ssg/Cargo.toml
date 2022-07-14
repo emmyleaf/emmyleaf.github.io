@@ -10,6 +10,7 @@ anyhow = "1.0.58"
 const_format = "0.2.26"
 handlebars = "4.3.1"
 hotwatch = { version = "0.4.6", optional = true }
+minify-html = "0.9.2"
 pulldown-cmark = { version = "0.9.1", default-features = false, features = [
     "simd",
 ] }

@@ -5,17 +5,14 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="color-scheme" content="dark light">
 
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Niramit&family=Zilla+Slab&display=swap">
 
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-
 		<link rel="stylesheet" href="/common.css">
-
-        <script defer src="https://unpkg.com/petite-vue"></script>
-        <script defer src="/theme.js"></script>
 
         <script>
             const prefersDark = (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
@@ -25,6 +22,9 @@
                 document.documentElement.classList.remove('dark')
             }
         </script>
+
+        <script defer src="https://unpkg.com/petite-vue"></script>
+        <script defer src="/theme.js"></script>
 
 		{{> head}}
 	</head>
@@ -36,9 +36,9 @@
             </a>
 		    <nav>
                 <a href="/blog">blog</a>
-                <a href="https://github.com/emmyleaf/">code</a>
-                <a href="https://leafcodes.bandcamp.com/">music</a>
                 <a href="/projects">projects</a>
+                <a href="https://github.com/emmyleaf">code</a>
+                <a href="https://leafcodes.bandcamp.com">music</a>
                 <a id="theme-switch" @click.prevent="toggle">
                     <span v-cloak v-show="theme === 'dark'">🌞</span>
                     <span v-cloak v-show="theme !== 'dark'">🌚</span>
@@ -49,7 +49,7 @@
 			{{> main}}
 		</main>
         <footer>
-            words <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">cc-by-nc-sa</a> &amp;
+            words <a href="https://creativecommons.org/licenses/by-nc-sa/4.0">cc-by-nc-sa</a> &amp;
             code <a href="https://paritylicense.com/versions/7.0.0">parity-7.0.0</a>
             • leafcodes 2022
         </footer>

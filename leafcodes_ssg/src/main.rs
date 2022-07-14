@@ -1,6 +1,7 @@
 use anyhow::{anyhow, Ok, Result};
 use const_format::concatcp;
 use handlebars::Handlebars;
+use minify_html::{minify, Cfg};
 use pulldown_cmark::{html, LinkDef, Parser};
 use serde::Serialize;
 use serde_json::json;
@@ -144,6 +145,7 @@ fn process_blog_posts(pages: &[Page]) -> Result<Vec<BlogPost>> {
 }
 
 fn generate_html(handlebars: &Handlebars, pages: &[Page], blog_posts: &[BlogPost]) -> Result<()> {
+    let minify_cfg = Cfg { minify_js: true, ..Cfg::spec_compliant() };
     for page in pages {
         let mut data = json!({ "content": &page.content, "metadata": &page.metadata });
         if page.metadata.template.eq("blog_index") {
@@ -151,9 +153,10 @@ fn generate_html(handlebars: &Handlebars, pages: &[Page], blog_posts: &[BlogPost
         }
 
         let html = handlebars.render(&page.metadata.template, &data)?;
+        let minified_html = minify(html.as_bytes(), &minify_cfg);
 
         fs::create_dir_all(page.out_path.as_path().parent().unwrap())?;
-        fs::write(&page.out_path, html)?;
+        fs::write(&page.out_path, minified_html)?;
     }
 
     Ok(())

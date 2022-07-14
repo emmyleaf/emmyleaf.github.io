@@ -151,6 +151,7 @@ body > header nav a:hover {
 
 #theme-switch {
   cursor: pointer;
+  user-select: none;
   font-size: 1.6rem;
   width: 55px;
 }
