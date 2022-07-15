@@ -15,6 +15,7 @@ use walkdir::{DirEntry, WalkDir};
 const BUILD_PATH: &str = "../build/";
 const SOURCE_PATH: &str = "../site_src/";
 
+const BLOG_PATH: &str = concatcp!(BUILD_PATH, "blog");
 const CONTENT_PATH: &str = concatcp!(SOURCE_PATH, "content");
 const INCLUDE_PATH: &str = concatcp!(SOURCE_PATH, "include");
 const TEMPLATE_PATH: &str = concatcp!(SOURCE_PATH, "template");
@@ -68,7 +69,8 @@ fn build(handlebars: &Handlebars) -> Result<()> {
     _ = fs::remove_dir_all(BUILD_PATH); // Clean build directory
     let pages = parse_pages()?;
     let blog_posts = process_blog_posts(&pages)?;
-    generate_html(handlebars, &pages, &blog_posts)?;
+    generate_pages_html(handlebars, &pages)?;
+    generate_blog_index_html(handlebars, &blog_posts)?;
     copy_includes()
 }
 
@@ -144,20 +146,29 @@ fn process_blog_posts(pages: &[Page]) -> Result<Vec<BlogPost>> {
     Ok(blog_posts)
 }
 
-fn generate_html(handlebars: &Handlebars, pages: &[Page], blog_posts: &[BlogPost]) -> Result<()> {
+fn generate_pages_html(handlebars: &Handlebars, pages: &[Page]) -> Result<()> {
     let minify_cfg = Cfg { minify_js: true, ..Cfg::spec_compliant() };
     for page in pages {
-        let mut data = json!({ "content": &page.content, "metadata": &page.metadata });
-        if page.metadata.template.eq("blog_index") {
-            data.as_object_mut().unwrap().insert("blog_posts".to_string(), json!(blog_posts));
-        }
-
+        let data = json!({ "content": &page.content, "metadata": &page.metadata });
         let html = handlebars.render(&page.metadata.template, &data)?;
         let minified_html = minify(html.as_bytes(), &minify_cfg);
 
         fs::create_dir_all(page.out_path.as_path().parent().unwrap())?;
         fs::write(&page.out_path, minified_html)?;
     }
+
+    Ok(())
+}
+
+fn generate_blog_index_html(handlebars: &Handlebars, blog_posts: &[BlogPost]) -> Result<()> {
+    let minify_cfg = Cfg { minify_js: true, ..Cfg::spec_compliant() };
+    let data = json!({ "title": "blog", "blog_posts": blog_posts });
+    let html = handlebars.render("blog_index", &data)?;
+    let minified_html = minify(html.as_bytes(), &minify_cfg);
+    let out_file = Path::new(BLOG_PATH).join("index.html");
+
+    fs::create_dir_all(BLOG_PATH)?;
+    fs::write(&out_file, minified_html)?;
 
     Ok(())
 }
