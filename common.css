@@ -195,8 +195,22 @@ main p {
   justify-content: space-between;
 }
 
-.blog-entry time {
+article > header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-block: 1.333rem;
+}
+
+.blog-entry time,
+article > header > time {
   font-family: "Zilla Slab", serif;
+}
+
+article > header > h1 {
+  font-size: 2rem;
+  margin-block: 0;
 }
 
 body > footer {
