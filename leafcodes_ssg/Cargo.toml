@@ -5,7 +5,7 @@ edition = "2021"
 license-file = "../LICENSE.md"
 
 [dependencies]
-axum = { version = "0.5.12", optional = true }
+axum = { version = "0.5.13", optional = true }
 anyhow = "1.0.58"
 const_format = "0.2.26"
 handlebars = "4.3.1"
