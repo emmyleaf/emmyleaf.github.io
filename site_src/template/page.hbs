@@ -8,15 +8,12 @@
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Niramit&family=Zilla+Slab&display=swap">
-
 		<link rel="stylesheet" href="/common.css">
 
         <script>
-            const prefersDark = (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
-            if (prefersDark || localStorage.theme === 'dark') {
+            // Make sure we set theme class *before* starting to render
+            if ((!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
+                || localStorage.theme === 'dark') {
                 document.documentElement.classList.add('dark')
             } else {
                 document.documentElement.classList.remove('dark')
@@ -39,7 +36,7 @@
                 <a href="/projects">projects</a>
                 <a href="https://github.com/emmyleaf">code</a>
                 <a href="https://leafcodes.bandcamp.com">music</a>
-                <a id="theme-switch" @click.prevent="toggle">
+                <a id="theme-switch" @click.prevent="toggleTheme">
                     <span v-cloak v-show="theme === 'dark'">🌞</span>
                     <span v-cloak v-show="theme !== 'dark'">🌚</span>
                 </a>

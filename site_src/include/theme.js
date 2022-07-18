@@ -1,6 +1,6 @@
 PetiteVue.createApp({
   theme: localStorage.theme,
-  toggle() {
+  toggleTheme() {
     if (this.theme === 'dark') {
       this.theme = 'light'
       document.documentElement.classList.remove('dark')
