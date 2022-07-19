@@ -42,14 +42,7 @@ struct BlogPost<'a> {
 }
 
 fn main() -> Result<()> {
-    #[cfg(feature = "dev")]
-    {
-        dev()
-    }
-    #[cfg(not(feature = "dev"))]
-    {
-        build(&init_handlebars()?)
-    }
+    build(&init_handlebars()?)
 }
 
 fn init_handlebars() -> Result<Handlebars<'static>> {
@@ -72,42 +65,6 @@ fn build(handlebars: &Handlebars) -> Result<()> {
     generate_pages_html(handlebars, &pages)?;
     generate_blog_index_html(handlebars, &blog_posts)?;
     copy_includes()
-}
-
-#[cfg(feature = "dev")]
-#[tokio::main]
-async fn dev() -> Result<()> {
-    use axum::{http::StatusCode, response::IntoResponse, routing::get_service, Router, Server};
-    use hotwatch::blocking::{Flow, Hotwatch};
-    use std::net::SocketAddr;
-    use tower_http::services::ServeDir;
-
-    let handlebars = init_handlebars()?;
-    build(&handlebars)?;
-
-    tokio::task::spawn_blocking(move || {
-        let watch_handler = move |_| {
-            build(&handlebars).unwrap();
-            println!("Site rebuilt!");
-            Flow::Continue
-        };
-        let mut hotwatch = Hotwatch::new().unwrap();
-        hotwatch.watch(SOURCE_PATH, watch_handler).unwrap();
-        hotwatch.run();
-    });
-
-    async fn handle_error(_err: std::io::Error) -> impl IntoResponse {
-        (StatusCode::INTERNAL_SERVER_ERROR, "Something went wrong...")
-    }
-
-    let service = get_service(ServeDir::new(BUILD_PATH)).handle_error(handle_error);
-    let app = Router::new().fallback(service);
-    let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
-
-    println!("Serving site on {}", addr);
-    Server::bind(&addr).serve(app.into_make_service()).await?;
-
-    Ok(())
 }
 
 fn parse_pages() -> Result<Vec<Page>> {

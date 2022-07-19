@@ -1,4 +1,7 @@
-PetiteVue.createApp({
+import { createApp } from 'petite-vue'
+import './index.css'
+
+createApp({
   theme: localStorage.theme,
   toggleTheme() {
     if (this.theme === 'dark') {
