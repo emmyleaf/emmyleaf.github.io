@@ -5,7 +5,7 @@ import { buildHtml, buildScripts } from './common.mjs';
 
 const runDevBuild = () => buildHtml()
   .then(() => buildScripts({ sourcemap: true, }))
-  .then(() => console.log('build complete!'))
+  .then(() => console.log('build complete!'), (err) => console.error(`build failed!\n${err}`))
 
 const listener = (path) => {
   console.log(`${path} changed, starting build...`)

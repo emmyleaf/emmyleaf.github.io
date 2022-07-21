@@ -15,8 +15,8 @@ export const buildScripts = (extraBuildOpts = {}) => esbuild.build({
 
 export const buildHtml = (cargoRunArgs = []) => {
   return new Promise((resolve, reject) => {
-    const process = spawn('cargo', ['run', ...cargoRunArgs], { cwd: 'generator', stdio: 'ignore' })
+    const process = spawn('cargo', ['run', '--quiet', ...cargoRunArgs], { cwd: 'generator', stdio: 'inherit' })
     process.on('error', err => reject(err))
-    process.on('close', () => resolve())
+    process.on('close', (code) => code == 0 ? resolve() : reject(`cargo exit code: ${code}`))
   })
 }
