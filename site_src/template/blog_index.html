@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{>_inc_head.html}}
+
+    <meta name="title" content="blog">
+    <title>blog • leafcodes</title>
+</head>
+
+<body>
+    {{>_inc_header.html}}
+
+    <main>
+        <h1>blog posts</h1>
+        <nav class="blog-index">
+            {{#posts}}
+            <div class="blog-entry">
+                <a href="/blog/{{filename}}">{{title}}</a>
+                <time datetime="{{date}}">{{date}}</time>
+            </div>
+            {{/posts}}
+            {{^posts}}
+            <p>No posts yet!</p>
+            {{/posts}}
+        </nav>
+    </main>
+
+    {{>_inc_footer.html}}
+</body>
+
+</html>

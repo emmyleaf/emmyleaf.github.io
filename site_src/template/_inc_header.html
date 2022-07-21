@@ -1,0 +1,16 @@
+<header>
+    <a id="header-title" href="/">
+        <span id="title-name">Emmy Leadley </span>
+        <span id="title-handle">@leafcodes</span>
+    </a>
+    <nav>
+        <a href="/blog">blog</a>
+        <a href="/projects">projects</a>
+        <a href="https://github.com/emmyleaf">code</a>
+        <a href="https://leafcodes.bandcamp.com">music</a>
+        <a id="theme-switch" @click.prevent="toggleTheme">
+            <span v-cloak v-show="theme === 'dark'">🌞</span>
+            <span v-cloak v-show="theme !== 'dark'">🌚</span>
+        </a>
+    </nav>
+</header>

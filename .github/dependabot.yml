@@ -1,7 +1,7 @@
 version: 2
 updates:
   - package-ecosystem: "cargo"
-    directory: "/leafcodes_ssg/"
+    directory: "/generator/"
     schedule:
       interval: "weekly"
     target-branch: leafcodes_ssg

@@ -1,7 +1,7 @@
 import { spawn } from 'child_process';
 import esbuild from 'esbuild';
 
-const baseBuildOptions = {
+export const buildScripts = (extraBuildOpts = {}) => esbuild.build({
   entryPoints: ['site_src/script/index.js'],
   outfile: 'build/bundle.js',
   bundle: true,
@@ -10,13 +10,12 @@ const baseBuildOptions = {
   target: ['es6'],
   loader: { '.woff2': 'copy' },
   assetNames: '[name]',
-}
-
-export const buildScripts = (extraBuildOpts = {}) => esbuild.build({ ...baseBuildOptions, ...extraBuildOpts })
+  ...extraBuildOpts
+})
 
 export const buildHtml = (cargoRunArgs = []) => {
   return new Promise((resolve, reject) => {
-    const process = spawn('cargo', ['run', ...cargoRunArgs], { cwd: 'leafcodes_ssg', stdio: 'ignore' })
+    const process = spawn('cargo', ['run', ...cargoRunArgs], { cwd: 'generator', stdio: 'ignore' })
     process.on('error', err => reject(err))
     process.on('close', () => resolve())
   })

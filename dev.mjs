@@ -7,14 +7,17 @@ const runDevBuild = () => buildHtml()
   .then(() => buildScripts({ sourcemap: true, }))
   .then(() => console.log('build complete!'))
 
+const listener = (path) => {
+  console.log(`${path} changed, starting build...`)
+  runDevBuild()
+}
+
 runDevBuild().then(() => {
   // start watcher for all source files 
-  const watcher = chokidar.watch('site_src');
+  const watcher = chokidar.watch(['generator/src', 'site_src']);
   watcher.on('ready', () => {
-    watcher.on('all', (event) => {
-      console.log(`${event} detected, starting build...`)
-      runDevBuild()
-    })
+    watcher.on('add', listener)
+    watcher.on('change', listener)
     console.log('watching...')
   })
 
