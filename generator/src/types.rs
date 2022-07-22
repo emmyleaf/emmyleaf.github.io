@@ -28,3 +28,15 @@ pub struct BlogPost<'a> {
 pub struct BlogIndex<'a> {
     pub posts: Vec<BlogPost<'a>>,
 }
+
+#[derive(Content, Debug)]
+pub struct Project<'a> {
+    pub title: &'a str,
+    pub summary: &'a str,
+    pub filename: &'a str,
+}
+
+#[derive(Content, Debug)]
+pub struct ProjectIndex<'a> {
+    pub projects: Vec<Project<'a>>,
+}

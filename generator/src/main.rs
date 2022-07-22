@@ -1,6 +1,5 @@
 mod types;
 
-use crate::types::{BlogIndex, BlogPost, Page, PageContent};
 use anyhow::{Ok, Result};
 use const_format::concatcp;
 use minify_html::{minify, Cfg};
@@ -10,24 +9,28 @@ use std::{
     fs,
     path::{Path, PathBuf},
 };
+use types::{BlogIndex, BlogPost, Page, PageContent, Project, ProjectIndex};
 use walkdir::{DirEntry, WalkDir};
 
 const BUILD_PATH: &str = "../build/";
 const SOURCE_PATH: &str = "../site_src/";
-
 const BLOG_PATH: &str = concatcp!(BUILD_PATH, "blog");
+const PROJECTS_PATH: &str = concatcp!(BUILD_PATH, "projects");
 const CONTENT_PATH: &str = concatcp!(SOURCE_PATH, "content");
 const INCLUDE_PATH: &str = concatcp!(SOURCE_PATH, "include");
 const TEMPLATE_PATH: &str = concatcp!(SOURCE_PATH, "template");
 
 fn main() -> Result<()> {
-    // clean build directory
-    _ = fs::remove_dir_all(BUILD_PATH);
+    _ = fs::remove_dir_all(BUILD_PATH); // clean build directory
+
     let ramhorns = Ramhorns::from_folder(TEMPLATE_PATH)?;
+    let minify_cfg = Cfg { minify_js: true, ..Cfg::spec_compliant() };
     let pages = parse_pages()?;
-    let blog_index = process_blog_index(&pages)?;
-    generate_pages_html(&ramhorns, &pages)?;
-    generate_blog_index_html(&ramhorns, &blog_index)?;
+    let (blog_index, project_index) = process_indices(&pages)?;
+
+    generate_pages_html(&ramhorns, &minify_cfg, &pages)?;
+    generate_blog_index_html(&ramhorns, &minify_cfg, &blog_index)?;
+    generate_project_index_html(&ramhorns, &minify_cfg, &project_index)?;
     copy_includes()
 }
 
@@ -42,7 +45,7 @@ fn parse_pages() -> Result<Vec<Page>> {
 
         pages.push(Page { page_content, out_path })
     }
-
+    pages.sort_by(|a, b| b.page_content.date.cmp(&a.page_content.date)); // sort by date desc
     Ok(pages)
 }
 
@@ -64,47 +67,65 @@ fn parse_page(md_content: String) -> PageContent {
     }
 }
 
-fn process_blog_index(pages: &[Page]) -> Result<BlogIndex> {
-    let mut posts = pages
-        .iter()
-        .filter(|page| page.page_content.template.starts_with("blog_post"))
-        .map(|page| BlogPost {
-            title: &page.page_content.title,
-            date: &page.page_content.date,
-            filename: page.out_path.as_path().file_name().unwrap().to_str().unwrap(),
-        })
-        .collect::<Vec<BlogPost>>();
-
-    // sort by date desc
-    posts.sort_by(|a, b| b.date.cmp(a.date));
-
-    Ok(BlogIndex { posts })
+fn process_indices(pages: &Vec<Page>) -> Result<(BlogIndex, ProjectIndex)> {
+    let mut posts = Vec::new();
+    let mut projects = Vec::new();
+    for Page { page_content, out_path } in pages {
+        let filename = out_path.as_path().file_name().unwrap().to_str().unwrap();
+        match page_content.template.as_str() {
+            "blog_post.html" => posts.push(BlogPost {
+                title: &page_content.title,
+                date: &page_content.date,
+                filename,
+            }),
+            "project.html" => projects.push(Project {
+                title: &page_content.title,
+                summary: &page_content.summary,
+                filename,
+            }),
+            _ => {}
+        }
+    }
+    Ok((BlogIndex { posts }, ProjectIndex { projects }))
 }
 
-fn generate_pages_html(ramhorns: &Ramhorns, pages: &[Page]) -> Result<()> {
-    let minify_cfg = Cfg { minify_js: true, ..Cfg::spec_compliant() };
+fn generate_pages_html(ramhorns: &Ramhorns, minify_cfg: &Cfg, pages: &[Page]) -> Result<()> {
     for Page { page_content, out_path } in pages {
         let template = ramhorns.get(&page_content.template).unwrap();
         let html = template.render(&page_content);
-        let minified_html = minify(html.as_bytes(), &minify_cfg);
-
-        fs::create_dir_all(out_path.as_path().parent().unwrap())?;
-        fs::write(&out_path, minified_html)?;
+        let minified_html = minify(html.as_bytes(), minify_cfg);
+        write_file(out_path, &minified_html)?;
     }
-
     Ok(())
 }
 
-fn generate_blog_index_html(ramhorns: &Ramhorns, blog_index: &BlogIndex) -> Result<()> {
-    let minify_cfg = Cfg { minify_js: true, ..Cfg::spec_compliant() };
+fn generate_blog_index_html(
+    ramhorns: &Ramhorns,
+    minify_cfg: &Cfg,
+    blog_index: &BlogIndex,
+) -> Result<()> {
     let template = ramhorns.get("blog_index.html").unwrap();
     let html = template.render(blog_index);
-    let minified_html = minify(html.as_bytes(), &minify_cfg);
-    let out_file = Path::new(BLOG_PATH).join("index.html");
+    let minified_html = minify(html.as_bytes(), minify_cfg);
+    let out_path = Path::new(BLOG_PATH).join("index.html");
+    write_file(&out_path, &minified_html)
+}
 
-    fs::create_dir_all(BLOG_PATH)?;
-    fs::write(&out_file, minified_html)?;
+fn generate_project_index_html(
+    ramhorns: &Ramhorns,
+    minify_cfg: &Cfg,
+    project_index: &ProjectIndex,
+) -> Result<()> {
+    let template = ramhorns.get("project_index.html").unwrap();
+    let html = template.render(project_index);
+    let minified_html = minify(html.as_bytes(), minify_cfg);
+    let out_path = Path::new(PROJECTS_PATH).join("index.html");
+    write_file(&out_path, &minified_html)
+}
 
+fn write_file(path: &Path, contents: &[u8]) -> Result<()> {
+    fs::create_dir_all(path.parent().unwrap())?;
+    fs::write(path, contents)?;
     Ok(())
 }
 
@@ -116,7 +137,6 @@ fn copy_includes() -> Result<()> {
         fs::create_dir_all(to_path.parent().unwrap())?;
         fs::copy(from_path, to_path)?;
     }
-
     Ok(())
 }
 

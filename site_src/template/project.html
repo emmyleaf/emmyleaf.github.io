@@ -11,7 +11,10 @@
 <body>
     {{>_inc_header.html}}
 
-    <main>{{{content}}}</main>
+    <main>
+        <h1>{{title}}</h1>
+        {{{content}}}
+    </main>
 
     {{>_inc_footer.html}}
 </body>

@@ -207,7 +207,8 @@ main p {
   line-height: 1.5rem;
 }
 
-.blog-index {
+.blog-index,
+.project-index {
   margin: 1rem 0;
 }
 
@@ -216,6 +217,42 @@ main p {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+.project-index > a:link {
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  text-decoration: none;
+}
+
+.project-index > a:hover {
+  background: none;
+  transition: none;
+}
+
+.project-entry {
+  height: 150px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: var(--bg-color);
+}
+
+.project-entry:hover {
+  background-color: var(--hover-color);
+  transition: background-color 0.25s;
+}
+
+.project-entry > h2 {
+  margin: 0 0 1rem 0;
+  color: var(--text-color);
+}
+
+.project-entry > img {
+  float: right;
+  margin: -20px -20px 0 0;
+  height: 150px;
+  border-radius: 10px;
 }
 
 article > header {

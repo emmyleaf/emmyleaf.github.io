@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{>_inc_head.html}}
+
+    <meta name="title" content="projects">
+    <title>projects • leafcodes</title>
+</head>
+
+<body>
+    {{>_inc_header.html}}
+
+    <main>
+        <h1>Projects</h1>
+        <nav class="project-index">
+            {{#projects}}
+            <a href="/projects/{{filename}}">
+                <div class="project-entry">
+                    <img src="https://github.com/emmyleaf/Lutra/raw/main/Lutra.Examples/Assets/lutra.png">
+                    <h2>{{title}}</h2>
+                    {{summary}}
+                </div>
+            </a>
+            {{/projects}}
+            {{^projects}}
+            <p>No projects yet!</p>
+            {{/projects}}
+        </nav>
+    </main>
+
+    {{>_inc_footer.html}}
+</body>
+
+</html>
