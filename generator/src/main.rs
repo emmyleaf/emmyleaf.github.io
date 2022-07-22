@@ -58,6 +58,8 @@ fn parse_page(md_content: String) -> PageContent {
         template: extract("_metadata_:template") + ".html",
         title: extract("_metadata_:title"),
         date: extract("_metadata_:date"),
+        summary: extract("_metadata_:summary"),
+        tags: extract("_metadata_:tags"),
         content,
     }
 }

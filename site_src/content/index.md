@@ -1,8 +1,6 @@
 [_metadata_:template]: - "index"
 [_metadata_:title]: - "home"
 
-# welcome to my cool website
-
 hello! i'm emmy, a software engineer, music producer, and game developer.
 
 i use **she/her** or **they/them** pronouns.

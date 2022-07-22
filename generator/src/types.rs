@@ -6,6 +6,8 @@ pub struct PageContent {
     pub template: String,
     pub title: String,
     pub date: String,
+    pub summary: String,
+    pub tags: String,
     pub content: String,
 }
 
