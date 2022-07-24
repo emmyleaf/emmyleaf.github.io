@@ -1,0 +1,6 @@
+[_metadata_:template]: - "project"
+[_metadata_:title]: - "Perfect Draw"
+[_metadata_:summary]: - "A card-based strategy game based on Tremors for Together Jam"
+[_metadata_:tags]: - "code,gamedev,C#,Unity"
+[_metadata_:image]: - "perfect-draw.jpg"
+[_metadata_:date]: - "2022-07-03"

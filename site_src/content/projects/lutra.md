@@ -2,6 +2,8 @@
 [_metadata_:title]: - "Lutra"
 [_metadata_:summary]: - "Cross-platform .NET6 2D game framework"
 [_metadata_:tags]: - "code,gamedev,C#"
+[_metadata_:image]: - "lutra.png"
+[_metadata_:date]: - "2022-01-27"
 
 Lutra is a framework for making 2D games in C# with a focus on cross-platform builds, pixel perfect rendering, and ease of use.
 

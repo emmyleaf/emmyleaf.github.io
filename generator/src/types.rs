@@ -8,6 +8,7 @@ pub struct PageContent {
     pub date: String,
     pub summary: String,
     pub tags: String,
+    pub image: String,
     pub content: String,
 }
 
@@ -33,6 +34,7 @@ pub struct BlogIndex<'a> {
 pub struct Project<'a> {
     pub title: &'a str,
     pub summary: &'a str,
+    pub image: &'a str,
     pub filename: &'a str,
 }
 

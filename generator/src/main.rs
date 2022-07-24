@@ -63,6 +63,7 @@ fn parse_page(md_content: String) -> PageContent {
         date: extract("_metadata_:date"),
         summary: extract("_metadata_:summary"),
         tags: extract("_metadata_:tags"),
+        image: extract("_metadata_:image"),
         content,
     }
 }
@@ -81,6 +82,7 @@ fn process_indices(pages: &Vec<Page>) -> Result<(BlogIndex, ProjectIndex)> {
             "project.html" => projects.push(Project {
                 title: &page_content.title,
                 summary: &page_content.summary,
+                image: &page_content.image,
                 filename,
             }),
             _ => {}

@@ -1,0 +1,6 @@
+[_metadata_:template]: - "project"
+[_metadata_:title]: - "Psifrost"
+[_metadata_:summary]: - "Gay hover racing for Rainbow Jam 2021!"
+[_metadata_:tags]: - "code,music,gamedev,C#,Unity"
+[_metadata_:image]: - "psifrost.png"
+[_metadata_:date]: - "2021-09-05"

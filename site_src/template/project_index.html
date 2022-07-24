@@ -17,7 +17,7 @@
             {{#projects}}
             <a href="/projects/{{filename}}">
                 <div class="project-entry">
-                    <img src="https://github.com/emmyleaf/Lutra/raw/main/Lutra.Examples/Assets/lutra.png">
+                    {{#image}}<img src="/images/{{image}}">{{/image}}
                     <h2>{{title}}</h2>
                     {{summary}}
                 </div>

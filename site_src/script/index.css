@@ -221,8 +221,9 @@ main p {
 }
 
 .project-index > a:link {
+  display: block;
   padding: 0;
-  margin: 0;
+  margin: 20px 0 0;
   border-radius: 0;
   text-decoration: none;
 }

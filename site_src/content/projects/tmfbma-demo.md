@@ -1,0 +1,6 @@
+[_metadata_:template]: - "project"
+[_metadata_:title]: - "Tiny Melon Friend's Big Melon Adventure - v0.1 Demo"
+[_metadata_:summary]: - "A funky fresh platformer following the adventures of Tiny Melon Friend!"
+[_metadata_:tags]: - "code,music,gamedev,C#"
+[_metadata_:image]: - "tmfbma-demo.png"
+[_metadata_:date]: - "2021-04-30"
