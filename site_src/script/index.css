@@ -30,29 +30,27 @@ a:hover {
   text-decoration: none;
 }
 
-/* Light/dark mode variables */
+/* Colour variables */
 :root {
-  --bg-color: #fdd9e5;
-  --text-color: #333333;
+  /* Common */
   --title-color: #b90b4a;
   --subtitle-color: #d65d89;
-  --hover-color: #fccfdf;
-  --content-bg-color: var(--hover-color);
-  --content-hover-color: var(--bg-color);
+  --footer-color: #c83269;
+  /* Light mode */
+  --bg-color: #fdd9e5;
+  --text-color: #5d0626;
+  --hover-color: #fde2ec;
+  --content-bg-color: #fccfdf;
   --transparent-color: #00000000;
-  --footer-color: #333333;
 }
 
 :root.dark {
+  /* Dark mode */
   --bg-color: #3b0418;
   --text-color: #f1c4d5;
-  --title-color: #b90b4a;
-  --subtitle-color: #d65d89;
   --hover-color: #47041d;
   --content-bg-color: #330315;
-  --content-hover-color: var(--hover-color);
   --transparent-color: #ffffff00;
-  --footer-color: #c83269;
 }
 
 /* Locally hosted google fonts */
@@ -168,7 +166,7 @@ body > header nav a {
 }
 
 body > header nav a:hover {
-  background-color: var(--content-hover-color);
+  background-color: var(--hover-color);
   transition: background-color 0.2s;
 }
 
@@ -197,7 +195,7 @@ main a:link {
 }
 
 main a:hover {
-  background-color: var(--content-hover-color);
+  background-color: var(--hover-color);
   text-decoration-color: var(--transparent-color);
   transition: background-color 0.25s;
   transition: text-decoration-color 0.25s;
@@ -207,8 +205,7 @@ main p {
   line-height: 1.5rem;
 }
 
-.blog-index,
-.project-index {
+.blog-index {
   margin: 1rem 0;
 }
 
@@ -217,6 +214,10 @@ main p {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+.project-index {
+  margin-bottom: 10px;
 }
 
 .project-index > a:link {
