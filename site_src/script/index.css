@@ -202,7 +202,7 @@ main a:hover {
 }
 
 main p {
-  line-height: 1.5rem;
+  line-height: 1.667rem;
 }
 
 .blog-index {
@@ -297,6 +297,25 @@ body > footer a:hover {
   text-decoration-color: var(--transparent-color);
   transition: background-color 0.25s;
   transition: text-decoration-color 0.25s;
+}
+
+.project-bandcamp-embed {
+  border: 0;
+  border-radius: 10px;
+  margin: 0 0 10px 20px;
+  width: 300px;
+  height: 670px;
+  float: right;
+}
+
+.project-image-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.project-image {
+  border-radius: 10px;
 }
 
 /* Responsive media queries */
