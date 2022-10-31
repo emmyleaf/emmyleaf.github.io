@@ -227,9 +227,9 @@ checksum = "2dffe52ecf27772e601905b7522cb4ef790d2cc203488bbd0e2fe85fcb74566d"
 
 [[package]]
 name = "minify-html"
-version = "0.10.2"
+version = "0.10.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e16321f124e57bed2916c6e28ef67b94c9a9d85f234b4c33ac2882eaacd8736c"
+checksum = "58f84854d62363972a73c3d8331b85a479366a0871a83f2a01ac11b9ba787c10"
 dependencies = [
  "aho-corasick",
  "css-minify",
