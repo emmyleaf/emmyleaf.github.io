@@ -1,15 +1,16 @@
 [_metadata_:template]: - "index"
 [_metadata_:title]: - "home"
 
-hello! i'm emmy, a software engineer, music producer, and game developer.
+hello! i'm emmy, a **software engineer**, **music producer**, and **game developer**.
 
-i use **she/her** or **they/them** pronouns.
+you can use **she/her** or **they/them** pronouns to refer to me.
 
 you can find me and various things i have made on
-[twitter](https://twitter.com/leafcodes),
-[github](https://github.com/emmyleaf/),
-[bandcamp](https://leafcodes.bandcamp.com/), &
-[itch](https://leafcodes.itch.io/).
+[_cohost_](https://cohost.org/leafcodes),
+[_twitter_](https://twitter.com/leafcodes),
+[_github_](https://github.com/emmyleaf/),
+[_bandcamp_](https://leafcodes.bandcamp.com/), &
+[_itch_](https://leafcodes.itch.io/).
 
 here's where i might link to the blog post about how i made this site if i had finished it yet.
 

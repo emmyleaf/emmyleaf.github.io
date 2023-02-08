@@ -17,4 +17,4 @@ You can download the demo (sadly, for Windows only) [on itch](https://drmelon.it
 The extensive issues we had with building the game for other platforms are what inspired me to work on [Lutra](/projects/lutra)!
 
 I worked with [DrMelon](https://melon.zone/) to help get their long-term spare time project to this point.
-I made an soundtrack of 8 catchy tunes which can be found [on bandcamp](https://leafcodes.bandcamp.com/album/tiny-melon-friends-big-melon-adventure-demo-trax), and worked on various parts of the C# code.
+I made an soundtrack of 8 chill tunes which can be found [on bandcamp](https://leafcodes.bandcamp.com/album/tiny-melon-friends-big-melon-adventure-demo-trax), and worked on various parts of the C# code.
