@@ -5,9 +5,9 @@ edition = "2021"
 license-file = "../LICENSE.md"
 
 [dependencies]
-anyhow = "1.0.59"
-const_format = "0.2.26"
-minify-html = "0.10.2"
+anyhow = "1.0.69"
+const_format = "0.2.30"
+minify-html = "0.10.8"
 pulldown-cmark = { version = "0.9.2", default-features = false, features = [
     "simd",
 ] }

@@ -9,8 +9,8 @@
   },
   "devDependencies": {
     "chokidar": "^3.5.3",
-    "esbuild": "^0.15.12",
-    "serve-handler": "^6.1.3"
+    "esbuild": "^0.17.6",
+    "serve-handler": "^6.1.5"
   },
   "dependencies": {
     "petite-vue": "^0.4.1"
