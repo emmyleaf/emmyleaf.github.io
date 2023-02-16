@@ -6,11 +6,12 @@ hello! i'm emmy, a **software engineer**, **music producer**, and **game develop
 you can use **she/her** or **they/them** pronouns to refer to me.
 
 you can find me and various things i have made on
-[_cohost_](https://cohost.org/leafcodes),
-[_twitter_](https://twitter.com/leafcodes),
-[_github_](https://github.com/emmyleaf/),
-[_bandcamp_](https://leafcodes.bandcamp.com/), &
-[_itch_](https://leafcodes.itch.io/).
+<a rel="me" href="https://cohost.org/leafcodes"><i>cohost</i></a>,
+<a rel="me" href="https://tech.lgbt/@leafcodes"><i>mastodon</i></a>,
+<a rel="me" href="https://twitter.com/leafcodes"><i>twitter</i></a>,
+<a rel="me" href="https://github.com/emmyleaf"><i>github</i></a>,
+<a rel="me" href="https://leafcodes.bandcamp.com"><i>bandcamp</i></a>, &
+<a rel="me" href="https://leafcodes.itch.io"><i>itch</i></a>.
 
 here's where i might link to the blog post about how i made this site if i had finished it yet.
 
