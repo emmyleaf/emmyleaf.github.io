@@ -3,17 +3,17 @@ updates:
   - package-ecosystem: "cargo"
     directory: "/generator/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     target-branch: leafcodes_ssg
 
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     target-branch: leafcodes_ssg
 
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     target-branch: leafcodes_ssg
