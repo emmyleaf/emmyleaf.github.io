@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - leafcodes_ssg
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
 permissions:
   contents: write
 jobs:
