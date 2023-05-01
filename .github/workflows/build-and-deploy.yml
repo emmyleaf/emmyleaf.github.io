@@ -7,10 +7,12 @@ on:
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
-permissions:
-  contents: write
+permissions: 
+  contents: read
+  pages: write
+  id-token: write
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
@@ -22,18 +24,26 @@ jobs:
           node-version: "16"
 
       - name: Setup Rust ⚙️
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
+        run:
+          curl https://sh.rustup.rs -sSf | sh -s -- -y
 
       - name: Build 🔧
         run: |
           npm install
           npm run build
-
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
+          
+      - name: Upload Pages Artifact 🆙
+        uses: actions/upload-pages-artifact@v1
         with:
-          branch: main
-          folder: build
-          clean: true
+          path: ./build
+          
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    steps:
+      - name: Deploy 🚀
+        id: deployment
+        uses: actions/deploy-pages@v2
