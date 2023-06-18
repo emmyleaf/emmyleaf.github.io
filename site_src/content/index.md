@@ -1,7 +1,7 @@
 [_metadata_:template]: - "index"
 [_metadata_:title]: - "home"
 
-hello! i'm emmy, a **software engineer**, **music producer**, and **game developer**.
+hello! i'm emmy, a **software engineer**, **electronic musician**, and **game developer**.
 
 you can use **she/her** or **they/them** pronouns to refer to me.
 
@@ -12,6 +12,8 @@ you can find me and various things i have made on
 <a rel="me" href="https://github.com/emmyleaf"><i>github</i></a>,
 <a rel="me" href="https://leafcodes.bandcamp.com"><i>bandcamp</i></a>, &
 <a rel="me" href="https://leafcodes.itch.io"><i>itch</i></a>.
+
+i'm currently working as a freelance developer on a Virtual Reality project made with Unity.
 
 here's where i might link to the blog post about how i made this site if i had finished it yet.
 
