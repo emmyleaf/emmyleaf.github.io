@@ -5,7 +5,7 @@ edition = "2021"
 license-file = "../LICENSE.md"
 
 [dependencies]
-anyhow = "1.0.71"
+anyhow = "1.0.72"
 const_format = "0.2.31"
 minify-html = "0.11.1"
 pulldown-cmark = { version = "0.9.3", default-features = false, features = [
