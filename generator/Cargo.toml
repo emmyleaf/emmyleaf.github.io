@@ -12,4 +12,4 @@ pulldown-cmark = { version = "0.9.3", default-features = false, features = [
     "simd",
 ] }
 ramhorns = "0.14.0"
-walkdir = "2.3.3"
+walkdir = "2.4.0"
