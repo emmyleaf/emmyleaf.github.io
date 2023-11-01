@@ -6,7 +6,7 @@ license-file = "../LICENSE.md"
 
 [dependencies]
 anyhow = "1.0.75"
-const_format = "0.2.31"
+const_format = "0.2.32"
 minify-html = "0.11.1"
 pulldown-cmark = { version = "0.9.3", default-features = false, features = [
     "simd",
