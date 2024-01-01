@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "chokidar": "^3.5.3",
-    "esbuild": "^0.19.8",
+    "esbuild": "^0.19.11",
     "serve-handler": "^6.1.5"
   },
   "dependencies": {
