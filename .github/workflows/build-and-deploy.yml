@@ -33,7 +33,7 @@ jobs:
           npm run build
           
       - name: Upload Pages Artifact 🆙
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ./build
           
