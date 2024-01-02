@@ -7,7 +7,7 @@ on:
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
-permissions: 
+permissions:
   contents: read
   pages: write
   id-token: write
@@ -21,22 +21,21 @@ jobs:
       - name: Setup Node 🧰
         uses: actions/setup-node@v4
         with:
-          node-version: "16"
+          node-version: "20"
 
       - name: Setup Rust ⚙️
-        run:
-          curl https://sh.rustup.rs -sSf | sh -s -- -y
+        run: curl https://sh.rustup.rs -sSf | sh -s -- -y
 
       - name: Build 🔧
         run: |
           npm install
           npm run build
-          
+
       - name: Upload Pages Artifact 🆙
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./build
-          
+
   deploy:
     runs-on: ubuntu-latest
     environment:
