@@ -2,12 +2,15 @@
 [_metadata_:title]: - "Perfect Draw"
 [_metadata_:summary]: - "A card-based strategy game based on Tremors (1990)"
 [_metadata_:tags]: - "code,gamedev,C#,Unity"
-[_metadata_:image]: - "perfect-draw.jpg"
+[_metadata_:image]: - "perfect-draw.avif"
 [_metadata_:date]: - "2022-07-03"
 
 <div style="height:293px;" class="project-image-container">
     <img class="project-image" src="/images/perfect-draw-1.png">
-    <img class="project-image" src="/images/perfect-draw.jpg">
+    <picture>
+        <source srcset="/images/perfect-draw.avif" type="image/avif" />
+        <img class="project-image" src="/images/perfect-draw.jpg">
+    </picture>
 </div>
 
 Perfect Draw is a card-based strategy game based on the 1990 film "Tremors".
