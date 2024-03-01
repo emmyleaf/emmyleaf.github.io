@@ -405,7 +405,7 @@ dependencies = [
  "anyhow",
  "const_format",
  "minify-html",
- "pulldown-cmark",
+ "pulldown-cmark 0.10.0",
  "ramhorns",
  "walkdir",
 ]
@@ -769,6 +769,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "pulldown-cmark"
+version = "0.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dce76ce678ffc8e5675b22aa1405de0b7037e2fdf8913fea40d1926c6fe1e6e7"
+dependencies = [
+ "bitflags 2.4.1",
+ "memchr",
+ "unicase",
+]
+
+[[package]]
 name = "quote"
 version = "1.0.34"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -793,7 +804,7 @@ dependencies = [
  "beef",
  "fnv",
  "logos",
- "pulldown-cmark",
+ "pulldown-cmark 0.9.6",
  "ramhorns-derive",
 ]
 
