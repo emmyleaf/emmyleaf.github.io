@@ -3,7 +3,7 @@ mod types;
 use anyhow::{Ok, Result};
 use const_format::concatcp;
 use minify_html::{minify, Cfg};
-use pulldown_cmark::{html, LinkDef, Parser};
+use pulldown_cmark::{html, Parser};
 use ramhorns::Ramhorns;
 use std::{
     fs,
@@ -55,8 +55,9 @@ fn parse_page(md_content: String) -> PageContent {
     html::push_html(&mut content, &mut parser);
 
     let refdefs = parser.reference_definitions();
-    let to_title = |def: &LinkDef| def.title.as_deref().unwrap().to_string();
-    let extract = |key: &str| refdefs.get(key).map(to_title).unwrap_or_default();
+    let extract = |key: &str| {
+        refdefs.get(key).map(|def| def.title.as_deref().unwrap().to_string()).unwrap_or_default()
+    };
     PageContent {
         template: extract("_metadata_:template") + ".html",
         title: extract("_metadata_:title"),

@@ -5,11 +5,14 @@ edition = "2021"
 license-file = "../LICENSE.md"
 
 [dependencies]
-anyhow = "1.0.80"
-const_format = "0.2.32"
-minify-html = "0.15.0"
-pulldown-cmark = { version = "0.10.0", default-features = false, features = [
+anyhow = "1"
+const_format = "0.2"
+minify-html = "0.15"
+pulldown-cmark = { version = "0.10", default-features = false, features = [
+    "html",
     "simd",
 ] }
-ramhorns = "0.14.0"
-walkdir = "2.4.0"
+ramhorns = { version = "0.14", default-features = false, features = [
+    "export_derive",
+] }
+walkdir = "2"
