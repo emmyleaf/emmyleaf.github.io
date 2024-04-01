@@ -12,7 +12,7 @@ pulldown-cmark = { version = "0.10", default-features = false, features = [
     "html",
     "simd",
 ] }
-ramhorns = { version = "0.14", default-features = false, features = [
+ramhorns = { version = "1.0", default-features = false, features = [
     "export_derive",
 ] }
 walkdir = "2"
