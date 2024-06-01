@@ -8,7 +8,7 @@ license-file = "../LICENSE.md"
 anyhow = "1"
 const_format = "0.2"
 minify-html = "0.15"
-pulldown-cmark = { version = "0.10", default-features = false, features = [
+pulldown-cmark = { version = "0.11", default-features = false, features = [
     "html",
     "simd",
 ] }
