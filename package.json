@@ -8,8 +8,8 @@
     "dev": "node dev.mjs"
   },
   "devDependencies": {
-    "chokidar": "^3.6.0",
-    "esbuild": "^0.20.1",
+    "chokidar": "^4",
+    "esbuild": "^0.24",
     "serve-handler": "^6.1.5"
   },
   "dependencies": {

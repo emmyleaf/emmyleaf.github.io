@@ -8,11 +8,11 @@ license-file = "../LICENSE.md"
 anyhow = "1"
 const_format = "0.2"
 minify-html = "0.15"
-pulldown-cmark = { version = "0.10", default-features = false, features = [
+pulldown-cmark = { version = "0.12", default-features = false, features = [
     "html",
     "simd",
 ] }
-ramhorns = { version = "0.14", default-features = false, features = [
+ramhorns = { version = "1", default-features = false, features = [
     "export_derive",
 ] }
 walkdir = "2"
