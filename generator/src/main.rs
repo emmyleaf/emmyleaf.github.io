@@ -26,10 +26,10 @@ fn main() -> Result<()> {
     let ramhorns = Ramhorns::from_folder(TEMPLATE_PATH)?;
     let minify_cfg = Cfg { minify_js: true, ..Cfg::spec_compliant() };
     let pages = parse_pages()?;
-    let (blog_index, project_index) = process_indices(&pages)?;
+    let (_blog_index, project_index) = process_indices(&pages)?;
 
     generate_pages_html(&ramhorns, &minify_cfg, &pages)?;
-    generate_blog_index_html(&ramhorns, &minify_cfg, &blog_index)?;
+    // generate_blog_index_html(&ramhorns, &minify_cfg, &blog_index)?;
     generate_project_index_html(&ramhorns, &minify_cfg, &project_index)?;
     copy_includes()
 }
